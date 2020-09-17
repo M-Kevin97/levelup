@@ -1,0 +1,19 @@
+.nav-item-results {
+    border-radius: 0.2rem 0.2rem 0.2rem 0.2rem;
+    -moz-border-radius: 0.2rem 0.2rem 0.2rem 0.2rem;
+    -webkit-border-radius: 0.2rem 0.2rem 0.2rem 0.2rem;
+}
+
+.nav-item-results.active, .nav-item-results:focus, 
+.nav-item-results:hover, .nav-item-results.active:focus, 
+.nav-item-results:not(.active) {
+    color: white;
+    background-color: #137F8B;
+}
+
+.nav-item-results, .nav-item-results:not(.active) {
+    background-color: white;
+    color:#137F8B;
+}
+
+

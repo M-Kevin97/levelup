@@ -1,0 +1,36 @@
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+  <!-- Image Logo-->
+  <a (click)="goHome()" class="navbar-brand my-auto">
+    <img src="assets/img/logo.png" width="90" height="46" class="d-inline-block" alt="">
+  </a>
+
+  <app-search-bar (searchQuery)="goToResultsPage($event)"
+                  [height]="''">
+  </app-search-bar>
+
+  <!-- Button toggle dev navbar -->
+  <button class="navbar-toggler" type="button" 
+                                  data-toggle="collapse" 
+                                  data-target="#navbarContent" 
+                                  aria-controls="navbarContent" 
+                                  aria-expanded="false" 
+                                  aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>  
+
+  <div class="navbar-collapse-nav collapse navbar-collapse justify-content-end border" 
+       id="navbarContent">
+
+    <ul class="navbar-items nav navbar-nav justify-content-end my-auto ml-auto">
+
+      <!-- Home => Feed -->
+      <li class="nav-item nav-li">
+        <a  class="nav-link" (click)="goHome()">
+          <span class="iconify nav-icon" data-inline="false" data-icon="ant-design:home-filled"></span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</nav>

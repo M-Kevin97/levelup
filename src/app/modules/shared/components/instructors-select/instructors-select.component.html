@@ -1,0 +1,15 @@
+<div [formGroup]="instructorSelectForm">
+    <select class="form-control select-category" 
+            [ngStyle]="{'height':getHeight()}"
+            formControlName="instructorSelect"  
+            (change)="selectInstructor($event.target.value)"
+            id="instructorSelect"
+            required>
+
+    <option *ngFor="let instructor of this.instructorValues" 
+          [value]="instructor.id"
+          [selected]="true"> 
+      {{ instructor.firstname }} {{ instructor.lastname }}
+    </option>
+  </select>
+</div>

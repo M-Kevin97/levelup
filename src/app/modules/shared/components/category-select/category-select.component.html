@@ -1,0 +1,15 @@
+<div [formGroup]="categorySelectForm">
+  <select class="form-control select-category" 
+          [ngStyle]="{'height':getHeight()}"
+          formControlName="categorySelect"
+          (change)="selectCategory($event.target.value)"
+          [(ngModel)]="categorySelectId"
+          id="categorySelect"
+          required>
+
+    <option *ngFor="let cat of this.categoryValues" 
+            [value]="cat.id">
+        {{ cat.name }}
+    </option>
+  </select>
+</div>

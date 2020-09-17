@@ -1,0 +1,66 @@
+<app-header></app-header>
+
+<div id="home" class="container-fluid">
+  <div id="search-home" class="container-fluid">
+
+    <div class="sb-section border border-primary">
+      <h2>Trouver la formation qu'il vous faut !</h2>
+      <app-search-bar (searchQuery)="goToResultsPage($event)"
+                      [height]="'lg'">
+      </app-search-bar>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col border">
+      <div class="card card-cat"
+           (click)="onSearchByCategory('Immobilier')">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Immobilier</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col border border-success padding-0">
+      <div class="card card-cat border border-primary"
+           (click)="onSearchByCategory('Développement personnel')">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Développement personnel</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card card-cat"
+           (click)="onSearchByCategory('Trading')">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Trading</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card card-cat"
+           (click)="onSearchByCategory('Business en ligne')">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Business en ligne</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card card-cat"
+           (click)="onSearchByCategory('Marketing')">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Marketing</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

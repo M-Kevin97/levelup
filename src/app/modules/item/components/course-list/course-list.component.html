@@ -1,0 +1,27 @@
+<ul class="list-group">
+  <li *ngFor="let course of courses" class="list-group-item mb-4">
+
+    <div *ngIf="course"
+          class="row list-group-course mb-3"
+          (click)="consultCourse(course)">
+        <div class="col-3">
+          <img class="course-img" [src]="course.imageLink">
+        </div>
+        <div class="col-7">
+          <h5>{{ course.title }}</h5>
+          <span *ngIf="course.category" class="course-category">{{ course.category.name }}</span>
+          <div class="course-section-auteur">
+            <span>Par :</span>
+              <img class="course-img-author" src="" alt="" width="15" height="15">
+              <span class="course-author-name">{{ getInstructorName(course) }}</span>
+            </div>
+        </div>
+        <div class="col-2">
+          <span class="course-price">{{ course.price }} €</span>
+        </div>
+      </div>
+    
+  </li>
+</ul>
+
+
