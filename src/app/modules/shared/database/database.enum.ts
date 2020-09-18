@@ -4,6 +4,7 @@ export enum Database {
     DATA_COURSES = '/data/courses',
     DATA_INSTRUCTORS = '/data/instructors',
     DATA_CATEGORIES = '/data/categories',
+    SUB_CATEGORY = '/sub_categories',
     INSTRUCTOR = '/instructor',
     COURSES = '/items/courses',
     COURSE = '/course',

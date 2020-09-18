@@ -41,6 +41,20 @@ export class CategoryService {
     );
   }
 
+  // Methode permettant d'enregistrer une categorie dans la DB, pour l'administrateur
+  saveSubCategoryToDB(category:Category, newSubCategory:Category){
+
+    const ref = firebase.database().ref(Database.CATEGORIES)
+                                   .child(category.id)
+                                   .child(Database.SUB_CATEGORY);
+
+    const subCategoryId = ref.push().key;
+
+    ref.child(subCategoryId).set({
+      name: newSubCategory.name
+    });
+  }
+
   // Methode permettant de créer une nouvelle catégorie -- pour l'administrateur
   createNewCategory(newCategory:Category){
 
@@ -59,7 +73,22 @@ export class CategoryService {
         let catArray = [];
         data.forEach((element) => {
           console.log(element.key, element.child('name').val());
-          catArray.push(new Category(element.key, element.child('name').val()));
+
+          let subCatArray = [];
+          element.child('sub_categories').forEach((subElement) => {
+              console.log(element.key, subElement.child('name').val());
+
+              subCatArray.push(new Category(subElement.key, 
+                                            subElement.child('name').val(), 
+                                            []));
+
+              console.warn('sub category subCatArray :', subCatArray);
+
+          });
+
+          catArray.push(new Category(element.key, 
+                                     element.child('name').val(), 
+                                     subCatArray));
         });
 
         this.categories = Array.from(catArray);
@@ -122,8 +151,12 @@ export class CategoryService {
     return ref.child(Database.CATEGORY).child(category.id).set({
       name:category.name
     }).then(
-      function() {
-        return true;
+      () => {
+        return ref.child(Database.CATEGORY).child(category.id).child('sub_category')
+                                                              .child(category.subCategories[0].id)
+                                                              .set({
+          name:category.subCategories[0].name
+        });
     }).catch(function(error) {
       console.log(error);
         return false;

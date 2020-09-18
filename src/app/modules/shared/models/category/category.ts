@@ -1,4 +1,10 @@
 export class Category {
+    public get subCategories(): Category[] {
+        return this._subCategories;
+    }
+    public set subCategories(value: Category[]) {
+        this._subCategories = value;
+    }
     
     public get id(): string {
         return this._id;
@@ -14,7 +20,8 @@ export class Category {
     }
 
     constructor(private _id: string,
-                private _name: string){}
+                private _name: string,
+                private _subCategories: Category[]){}
 
     public static categoryFromJson(json: Object): Category {
         
@@ -25,7 +32,8 @@ export class Category {
 
         return new Category(
             id,
-            cat['name']);
+            cat['name'],
+            this.categoriesFromJson(cat['sub_categories']));
     }
 
     public static categoriesFromJson(json: Object): Category[] {

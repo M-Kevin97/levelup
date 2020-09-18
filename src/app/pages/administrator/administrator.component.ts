@@ -19,14 +19,19 @@ export class AdministratorComponent implements OnInit {
 
   // les différents formulaires
   categoryForm: FormGroup;
+  subcategoryForm: FormGroup;
   courseForm: FormGroup;
   instructorForm: FormGroup;
 
   // Formateur sélectionné
   instructorSelected:Instructor;
+
   // Catégorie sélectionné
   categorySelected:Category;
+  subCategorySelected:Category;
+  categorySelectedForSub:Category;
   categorySelectedId:string='';
+  subCategorySelectedId:string='';
 
   // variable pour la barre de navigation (Formation, Catégorie, Formateur)
   activeTab = 'course';
@@ -35,10 +40,13 @@ export class AdministratorComponent implements OnInit {
   private instructorSubscription: Subscription;
 
   categoryValues:Category[];
+  subCategoryValues:Category[] = [];
   private categorySubscription: Subscription;
 
   @ViewChild(InstructorsSelectComponent) instructorsSelectComponent: InstructorsSelectComponent;
   @ViewChild(CategorySelectComponent) categorySelectComponent: CategorySelectComponent;
+  @ViewChild(CategorySelectComponent) subCategorySelectComponent: CategorySelectComponent;
+  @ViewChild(CategorySelectComponent) categoryForSubSelectComponent: CategorySelectComponent;
 
   constructor(private formBuilder:FormBuilder,
               private categoryService: CategoryService,
@@ -54,7 +62,10 @@ export class AdministratorComponent implements OnInit {
 
     this.categoryForm = this.formBuilder.group({
       categoryName: ['',[Validators.required]],
-      categoryImgLink: ['',[Validators.required]],
+    });
+
+    this.subcategoryForm = this.formBuilder.group({
+      subcategoryName: ['',[Validators.required]],
     });
 
     this.instructorForm = this.formBuilder.group({
@@ -78,6 +89,12 @@ export class AdministratorComponent implements OnInit {
 
     this.courseForm.addControl('categorySelectComponent', this.categorySelectComponent.categorySelectForm);
     this.categorySelectComponent.categorySelectForm.setParent(this.courseForm);
+
+    this.courseForm.addControl('subCategorySelectComponent', this.subCategorySelectComponent.categorySelectForm);
+    this.subCategorySelectComponent.categorySelectForm.setParent(this.courseForm);
+
+    this.subcategoryForm.addControl('categoryForSubSelectComponent', this.categoryForSubSelectComponent.categorySelectForm);
+    this.categoryForSubSelectComponent.categorySelectForm.setParent(this.subcategoryForm);
   }
 
   getInstructorsFromService(){
@@ -113,6 +130,9 @@ export class AdministratorComponent implements OnInit {
         this.categorySelected = this.categoryValues[0];
         this.categorySelectedId = this.categorySelected.id;
 
+        this.subCategorySelected = this.categorySelected.subCategories[0] ? this.categorySelected.subCategories[0] : null;
+        this.subCategorySelectedId = this.subCategorySelected ? this.subCategorySelected.id : '';
+
       },
       (err: string) => console.error('Observer got an error: ' + err),
       () => {
@@ -123,7 +143,25 @@ export class AdministratorComponent implements OnInit {
 
   selectCategory(event:Category) {
     console.warn('selectCategory', event.name);
-    if(event) this.categorySelected = event;
+    if(event) {
+      this.categorySelected = event;
+      this.subCategoryValues = this.categorySelected.subCategories;
+
+      this.subCategorySelected = this.subCategoryValues ? this.subCategoryValues[0] : null;
+      this.subCategorySelectedId = this.subCategorySelected ? this.subCategorySelected.id : '';
+    }
+  }
+
+  selectSubCategory(event:Category) {
+    console.warn('selectCategory', event.name);
+    if(event) {
+      this.subCategorySelected = event;
+    }
+  }
+
+  selectCategoryForSub(event:Category) {
+    console.warn('selectCategory', event.name);
+    if(event) this.categorySelectedForSub = event;
   }
 
   selectInstructor(event:Instructor) {
@@ -141,8 +179,19 @@ export class AdministratorComponent implements OnInit {
 
     const categoryName = this.categoryForm.get('categoryName').value;
 
-    this.categoryService.saveCategoryToDB(new Category(null, categoryName));
+    this.categoryService.saveCategoryToDB(new Category(null, categoryName, []));
 
+  }
+
+  onCreateSubCategory() {
+
+    console.log('onCreateSubCategory');
+
+    const categoryForSub = this.categorySelectedForSub;
+    console.warn('categorySelectedForSub', this.categorySelectedForSub);
+    const subcategoryName = this.subcategoryForm.get('subcategoryName').value;
+
+    this.categoryService.saveSubCategoryToDB(categoryForSub ,new Category(null, subcategoryName, []));
   }
 
   onCreateCourse() {
@@ -151,6 +200,7 @@ export class AdministratorComponent implements OnInit {
 
     const courseTitle = this.courseForm.get('courseTitle').value;
     const courseCategory = this.categorySelected;
+    const courseSubCategory = this.subCategorySelected;
     console.warn('categorySelected', this.categorySelected);
     const courseDescription = this.courseForm.get('courseDescription').value;
     const coursePrice = this.courseForm.get('coursePrice').value;
@@ -159,7 +209,7 @@ export class AdministratorComponent implements OnInit {
 
     this.courseService.saveNewCourseInDB(new Course(null,
                                                     courseTitle,
-                                                    courseCategory,
+                                                    new Category(courseCategory.id, courseCategory.name, [courseSubCategory]),
                                                     courseDescription,
                                                     coursePrice,
                                                     courseInstructor,

@@ -54,7 +54,7 @@ export class SearchBarComponent implements OnInit {
 
         console.warn(data);
         this.categoryValues = data ? Array.from(data) : [];
-        this.categoryValues.splice(0, 0, new Category('0', DefautCategory.NAME));
+        this.categoryValues.splice(0, 0, new Category('0', DefautCategory.NAME, []));
         this.categorySelected = this.categoryValues[0];
         this.idCategorySelected = this.categorySelected.id;
       }
